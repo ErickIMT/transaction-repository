@@ -15,6 +15,12 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 public class RedisConfiguration {
 
   @Bean
+  public ReactiveRedisOperations<String, Transaction> reactiveRedisTransactionOperations(ReactiveRedisConnectionFactory factory) {
+    return new ReactiveRedisTemplate<String, Transaction>(factory,
+      RedisSerializationContext.fromSerializer(new Jackson2JsonRedisSerializer(Transaction.class)));
+  }
+
+  @Bean
   public ReactiveRedisOperations<String, Customer> reactiveRedisCustomerOperations(ReactiveRedisConnectionFactory factory) {
     return new ReactiveRedisTemplate<String, Customer>(factory,
       RedisSerializationContext.fromSerializer(new Jackson2JsonRedisSerializer(Customer.class)));
@@ -26,10 +32,6 @@ public class RedisConfiguration {
       RedisSerializationContext.fromSerializer(new Jackson2JsonRedisSerializer(Operation.class)));
   }
 
-  @Bean
-  public ReactiveRedisOperations<String, Transaction> reactiveRedisTransactionOperations(ReactiveRedisConnectionFactory factory) {
-    return new ReactiveRedisTemplate<String, Transaction>(factory,
-      RedisSerializationContext.fromSerializer(new Jackson2JsonRedisSerializer(Transaction.class)));
-  }
+
 
 }

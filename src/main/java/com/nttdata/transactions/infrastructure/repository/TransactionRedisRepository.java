@@ -3,8 +3,10 @@ package com.nttdata.transactions.infrastructure.repository;
 import com.nttdata.transactions.infrastructure.entity.Transaction;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
+import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
+@Repository
 public class TransactionRedisRepository implements TransactionRepository{
 
   private ReactiveRedisOperations<String, Transaction> operations;
