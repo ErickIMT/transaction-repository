@@ -21,23 +21,26 @@ public class TransactionService {
   private float sell;
   private float buy;
 
-  private Mono<Transaction> saveTransaction(Transaction transaction) {
+  public Mono<Transaction> saveTransaction(Transaction transaction) {
     Mono<Operation> operation = operationRepository.getOperationById(transaction.getOperationId());
+
     operation.map(operation1 -> {
       transaction.setBootcoinAmount(operation1.getBootcoinAmount());
+      transaction.setTypeOperation(operation1.getTypeOperation());
+      transaction.setTypePay(operation1.getTypePay());
       if(transaction.getTypeOperation().equals(TypeOperation.BUY)) {
         transaction.setSolesAmount(buy * transaction.getBootcoinAmount());
       } else if(transaction.getTypeOperation().equals(TypeOperation.SELL)) {
         transaction.setSolesAmount(sell * transaction.getBootcoinAmount());
       }
       return operation1;
-    });
+    }).subscribe();
 
 
     return transactionRepository.saveTransaction(transaction);
   }
 
-  private Mono<Transaction> findTransactionById(String id) {
+  public Mono<Transaction> findTransactionById(String id) {
     return transactionRepository.findById(id);
   }
 

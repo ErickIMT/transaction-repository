@@ -2,6 +2,7 @@ package com.nttdata.transactions.application.configuration;
 
 import com.nttdata.transactions.domain.dto.customer.Customer;
 import com.nttdata.transactions.domain.dto.operation.Operation;
+import com.nttdata.transactions.infrastructure.entity.Transaction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
@@ -23,6 +24,12 @@ public class RedisConfiguration {
   public ReactiveRedisOperations<String, Operation> reactiveRedisOperationOperations(ReactiveRedisConnectionFactory factory) {
     return new ReactiveRedisTemplate<String, Operation>(factory,
       RedisSerializationContext.fromSerializer(new Jackson2JsonRedisSerializer(Operation.class)));
+  }
+
+  @Bean
+  public ReactiveRedisOperations<String, Transaction> reactiveRedisTransactionOperations(ReactiveRedisConnectionFactory factory) {
+    return new ReactiveRedisTemplate<String, Transaction>(factory,
+      RedisSerializationContext.fromSerializer(new Jackson2JsonRedisSerializer(Transaction.class)));
   }
 
 }
